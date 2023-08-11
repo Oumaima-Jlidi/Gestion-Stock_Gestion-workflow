@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h3>Ajouter un produit</h3>
+      <form (submit)="ajouterProduit()">
+        <div class="form-group">
+          <label for="reference">Référence</label>
+          <input type="text" class="form-control" id="reference" [(ngModel)]="nouveauProduit.reference" name="reference" required>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input type="text" class="form-control" id="nom" [(ngModel)]="nouveauProduit.nom" name="nom" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" [(ngModel)]="nouveauProduit.description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="quantite">Quantité</label>
+          <input type="number" class="form-control" id="quantite" [(ngModel)]="nouveauProduit.quantite"  name="quantite" required>
+        </div>
+        <div class="form-group">
+          <label for="prix">Prix Unitaire</label>
+          <input type="number" class="form-control" id="prix" [(ngModel)]="nouveauProduit.prix" name="prix" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="prix">Timbre</label>
+          <input type="number" class="form-control" id="timbre" [(ngModel)]="nouveauProduit.timbre" name="timbre" required>
+        </div>
+        
+        <!-- ... autres champs ... -->
+
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </form>
+    </div>
+  </div>
+</div>
