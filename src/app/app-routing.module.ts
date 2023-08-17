@@ -3,11 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProduitsComponent } from './produits/produits.component';
 import { AddProduitComponent } from './add-produit/add-produit.component';
 import { UpdateProduitComponent } from './update-produit/update-produit.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { AddCategorieComponent } from './add-categorie/add-categorie.component';
+import { UpdateCategorieComponent } from './update-categorie/update-categorie.component';
+import { DashboradComponent } from './dashborad/dashborad.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
 {path: "produits", component : ProduitsComponent},
 {path: "add-produit", component : AddProduitComponent},
 {path: "update-produit/:id",  component: UpdateProduitComponent},
+{path: "categories", component : CategoriesComponent},
+{path: "add-categorie", component :AddCategorieComponent},
+{path: "update-categorie/:id",  component: UpdateCategorieComponent},
+{path: "dashborad",  component: DashboradComponent},
+{path: "register",  component: RegisterComponent},
+{path: "login",  component: LoginComponent},
+
 { path: "", redirectTo: "produits", pathMatch: "full" }
 ];
 @NgModule({

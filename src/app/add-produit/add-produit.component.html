@@ -1,3 +1,53 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="utf-8">
+<title>Gestion des Produits</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<!-- Brand -->
+<a class="navbar-brand" href="#">Gestion Du Stock</a>
+<!-- Links -->
+<ul class="navbar-nav">
+<li class="nav-item">
+<a class="nav-link" routerLink="/dashborad" >Home</a>
+</li>
+<!-- Dropdown -->
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+Produits
+</a>
+<div class="dropdown-menu">
+  <a class="dropdown-item" routerLink="/add-produit">Ajouter</a>
+  <a class="dropdown-item" routerLink="/produits">Lister</a>
+</div>
+</li>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+  Categories
+  </a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" routerLink="/add-categorie">Ajouter</a>
+    <a class="dropdown-item" routerLink="/categories">Liste des categories</a>
+  </div>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto" >
+<li class="nav-item dropdown">
+<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+[username]
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="#">login</a>
+<a class="dropdown-item" href="#">logout</a>
+<a class="dropdown-item" href="#">Profile</a>
+</div>
+</li>
+</ul>
+</nav>
+</body>
+</html>
 <div class="container">
   <div class="card">
     <div class="card-body">
@@ -19,6 +69,7 @@
           <label for="quantite">Quantité</label>
           <input type="number" class="form-control" id="quantite" [(ngModel)]="nouveauProduit.quantite"  name="quantite" required>
         </div>
+        
         <div class="form-group">
           <label for="prix">Prix Unitaire</label>
           <input type="number" class="form-control" id="prix" [(ngModel)]="nouveauProduit.prix" name="prix" required>
@@ -28,7 +79,11 @@
           <label for="prix">Timbre</label>
           <input type="number" class="form-control" id="timbre" [(ngModel)]="nouveauProduit.timbre" name="timbre" required>
         </div>
-        
+        <label>Catégorie:</label>
+  <select [(ngModel)]="nouveauProduit.categorie" name="categorieId" required>
+    <option *ngFor="let categorie of categories" [value]="categorie.id">{{ categorie.nom }}</option>
+  </select>
+
         <!-- ... autres champs ... -->
 
         <button type="submit" class="btn btn-primary">Ajouter</button>

@@ -1,4 +1,5 @@
 
+import { Categorie } from './categorie.model';
 
 export interface Produit {
   id?: number;
@@ -10,5 +11,5 @@ export interface Produit {
   timbre: number;
   prix_ttc: number;
   description: string;
-  
+  categorie: Categorie; // Utilisez "categorie" au lieu de "categorie_id"
 }

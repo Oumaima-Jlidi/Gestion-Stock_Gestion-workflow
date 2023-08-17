@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProduitService } from '../service/produit.service';
+import { CategorieService } from '../service/categorie.service';
 
 @Component({
   selector: 'app-update-produit',
@@ -10,17 +11,17 @@ import { ProduitService } from '../service/produit.service';
 export class UpdateProduitComponent implements OnInit {
   produitId: number;
   produit: any = {}; // Modifiez le type selon votre modèle de produit
+  categories: any[] = [];
 
-  constructor(private route: ActivatedRoute, private produitService: ProduitService, private router: Router) {
+  constructor(private route: ActivatedRoute, private produitService: ProduitService, private router: Router,private categorieservice:CategorieService) {
     this.produitId = Number(this.route.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {
     this.loadProduit();
+    this.loadCategories(); // Chargez la liste des catégories disponibles
+
   }
-
-
- 
 
   loadProduit(): void {
     this.produitService.getProduit(this.produitId).subscribe(
@@ -29,6 +30,16 @@ export class UpdateProduitComponent implements OnInit {
       },
       (error:any) => {
         console.error('Erreur lors du chargement du produit :', error);
+      }
+    );
+  }
+  loadCategories(): void {
+    this.categorieservice.getCategories().subscribe(
+      (data: any) => {
+        this.categories = data;
+      },
+      (error: any) => {
+        console.error('Erreur lors du chargement des catégories :', error);
       }
     );
   }
