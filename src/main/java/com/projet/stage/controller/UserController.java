@@ -1,5 +1,4 @@
 package com.projet.stage.controller;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,17 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import com.projet.stage.entities.User;
-import org.springframework.security.core.Authentication;
-import java.util.Optional;
+
 
 import com.projet.stage.DTO.AuthResponse;
 import com.projet.stage.DTO.LoginDTO;
-import com.projet.stage.DTO.LoginMesage;
 import com.projet.stage.DTO.UserDTO;
 import com.projet.stage.repos.UserRepository;
 import com.projet.stage.services.UserService;

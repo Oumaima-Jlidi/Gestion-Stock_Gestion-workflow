@@ -14,6 +14,7 @@ import com.projet.stage.entities.Categorie;
 import com.projet.stage.services.CategorieService;
 
 @CrossOrigin(origins="*")
+@RequestMapping("/api")
 @RestController
 public class CategorieController {
 	@Autowired

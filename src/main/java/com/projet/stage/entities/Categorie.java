@@ -26,10 +26,10 @@ public Categorie() {
 		super();
 	}
 
-public Categorie(long id) {
-	super();
-	this.id = id;
+public Categorie(String id) {
+    this.id = Long.parseLong(id);
 }
+
 
 public Categorie(long id, String nom, List<Produit> produits) {
 	super();
@@ -43,6 +43,12 @@ public Categorie(String nom, String type, String description) {
 	super();
 	this.nom = nom;
 
+}
+
+public Categorie(long id, String nom) {
+	super();
+	this.id = id;
+	this.nom = nom;
 }
 
 public long getId() {

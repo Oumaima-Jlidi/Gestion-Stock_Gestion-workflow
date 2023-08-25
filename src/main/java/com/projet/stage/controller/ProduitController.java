@@ -2,6 +2,7 @@ package com.projet.stage.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projet.stage.entities.Produit;
 import com.projet.stage.services.ProduitService;
 @CrossOrigin(origins="*")
+@RequestMapping("/api")
 @RestController
 public class ProduitController {
 	@Autowired
 	private ProduitService produitservice;
+
    @RequestMapping(method=RequestMethod.GET,value="produits")
    List<Produit> getAllProduits(){
 		return produitservice.getAllProduits();

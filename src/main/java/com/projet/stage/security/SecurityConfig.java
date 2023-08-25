@@ -45,11 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable() // Disable CSRF for simplicity
             .authorizeRequests()
                 .antMatchers("/api/v1/user/save","/api/v1/user/login").permitAll() // Allow registration endpoint without authentication
-                .antMatchers("/api/**").authenticated() // Secure other endpoints
-                .anyRequest().permitAll() // Allow all other requests
+              //  .antMatchers("/api/**").authenticated() // Secure other endpoints
                 .and()
-            .httpBasic()
-            .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 // Use basic authentication
 
