@@ -4,6 +4,7 @@ import 'datatables.net';
 import 'datatables.net-bs4';
 import * as $ from 'jquery';
 import { AuthService } from '../service/auth-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-produits',
@@ -17,7 +18,7 @@ export class ProduitsComponent implements OnInit {
   totalPrixTTC: number = 0; // Ajout de la propriété pour stocker la somme
   loggedInUserEmail: string | null = null; // Variable pour stocker l'email de l'utilisateur connecté
 
-  constructor(private produitService: ProduitService, private authService: AuthService) {}
+  constructor(private produitService: ProduitService, private authService: AuthService,private router:Router) {}
 
   ngOnInit() {
     console.log('on init ...');
@@ -70,5 +71,9 @@ export class ProduitsComponent implements OnInit {
   // Méthode pour calculer et retourner la somme totale des prix TTC
   getTotalPrixTTC(): number {
     return this.calculateTotalPrixTTC();
+  }
+  purchaseProduct(productId: number) {
+    console.log(`ID du produit cliqué : ${productId}`);
+    this.router.navigate(['/achat'], { queryParams: { produitId: productId } });
   }
 }

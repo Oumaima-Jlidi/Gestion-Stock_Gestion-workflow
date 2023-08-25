@@ -14,6 +14,9 @@ import { UpdateCategorieComponent } from './update-categorie/update-categorie.co
 import { DashboradComponent } from './dashborad/dashborad.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AchatComponent } from './achat/achat.component';
+import { ListeAchatComponent } from './liste-achat/liste-achat.component';
+import { UpdateAchatComponent } from './update-achat/update-achat.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { LoginComponent } from './login/login.component';
     UpdateCategorieComponent,
     DashboradComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    AchatComponent,
+    ListeAchatComponent,
+    UpdateAchatComponent
   ],
   imports: [
     BrowserModule,

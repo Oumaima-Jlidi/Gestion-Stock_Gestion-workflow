@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProduitService {
 readonly API_URL="http://localhost:8086"
-readonly ENDPOINT_PRODS="/produits"
+readonly ENDPOINT_PRODS="/api/produits"
   constructor(private httpClient:HttpClient) {
 
    }

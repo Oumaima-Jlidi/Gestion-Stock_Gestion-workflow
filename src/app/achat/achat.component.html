@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Gestion des Produits</title>
+</head>
+<body>
+  <!-- ... Navbar ... -->
+
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <h3>Acheter un produit</h3>
+        
+        <!-- Afficher un message en cas d'erreur -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        
+        <!-- Afficher un message en cas de succès -->
+        <div *ngIf="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
+        
+        <form (submit)="acheterProduit()">
+          <div class="form-group">
+            <label for="nom">Nom du Client</label>
+            <input type="text" class="form-control" id="nom_client" [(ngModel)]="nom_client" name="nom_client" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Adresse du Client</label>
+            <textarea class="form-control" id="adresse_client" [(ngModel)]="adresse_client" name="adresse_client" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="quantite">Quantité</label>
+            <input type="number" class="form-control" id="quantite" [(ngModel)]="quantite"  name="quantite" required>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Acheter</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

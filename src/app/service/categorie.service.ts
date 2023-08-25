@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CategorieService {
   readonly API_URL="http://localhost:8086"
-  readonly ENDPOINT_PRODS="/categories"
+  readonly ENDPOINT_PRODS="/api/categories"
   constructor(private httpClient:HttpClient) { }
 
   getCategories():Observable<any>{

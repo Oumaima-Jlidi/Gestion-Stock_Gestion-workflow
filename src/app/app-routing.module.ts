@@ -9,6 +9,9 @@ import { UpdateCategorieComponent } from './update-categorie/update-categorie.co
 import { DashboradComponent } from './dashborad/dashborad.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AchatComponent } from './achat/achat.component';
+import { ListeAchatComponent } from './liste-achat/liste-achat.component';
+import { UpdateAchatComponent } from './update-achat/update-achat.component';
 
 const routes: Routes = [
 {path: "produits", component : ProduitsComponent},
@@ -20,6 +23,10 @@ const routes: Routes = [
 {path: "dashborad",  component: DashboradComponent},
 {path: "register",  component: RegisterComponent},
 {path: "login",  component: LoginComponent},
+{path: "achat",  component: AchatComponent},
+{path: "liste-achat",  component: ListeAchatComponent},
+{path:"update-achat/:achatId/:produitId",  component: UpdateAchatComponent},
+
 
 { path: "", redirectTo: "produits", pathMatch: "full" }
 ];
