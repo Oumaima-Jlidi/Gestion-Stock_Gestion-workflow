@@ -1,11 +1,17 @@
 package com.projet.stage.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Produit {
@@ -25,13 +31,16 @@ private String description;
 @ManyToOne
 @JoinColumn(name = "categorie_id")
 private Categorie categorie;
-
+@OneToMany(mappedBy = "produit", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Facture> factures = new ArrayList<>();
 
 public Produit() {
 	super();
 	// TODO Auto-generated constructor stub
 }
-
+public Produit(String id) {
+    this.id = Long.parseLong(id);
+}
 
 public Produit(String reference, String nom, int quantite, double prix, String description) {
 	super();
@@ -46,6 +55,8 @@ public Produit(String reference, String nom, int quantite, double prix, String d
     // Appel à la méthode dans le constructeur
 
 }
+
+
 
 
 public long getId() {

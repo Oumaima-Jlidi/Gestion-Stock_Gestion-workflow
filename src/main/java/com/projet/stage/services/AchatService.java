@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.projet.stage.entities.Achat;
+import com.projet.stage.entities.Facture;
 import com.projet.stage.entities.Produit;
 import com.projet.stage.repos.AchatRepository;
+import com.projet.stage.repos.FactureRepository;
 import com.projet.stage.repos.ProduitRepository;
 
 @Service
@@ -20,7 +22,9 @@ public class AchatService {
 
     @Autowired
     private ProduitRepository produitRepository;
-    
+
+    @Autowired
+    private FactureRepository factureRepository;
     @Autowired
     private AchatRepository achatRepository;
 
@@ -65,6 +69,5 @@ public class AchatService {
     public Achat getAchatById(long id) {
     	return achatRepository.findById(id).get();
     }
-    
-    
+
 }
