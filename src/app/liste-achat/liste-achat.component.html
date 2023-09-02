@@ -71,6 +71,7 @@ Produits
           <td>
             <button (click)="deleteAchat(achat.id)" class="btn btn-danger">Supprimer</button>
             <a class="btn btn-success" [routerLink]="['/update-achat',achat.id,produitId]">Modifier</a>
+            <button (click)="ajouterFacture(achat.id, produitId)" class="btn btn-primary"> Facture</button>
 
           </td>
           <!-- Format the date using DatePipe -->

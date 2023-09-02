@@ -1,0 +1,19 @@
+
+<div *ngIf="facture">
+    <h2>Détails de la facture</h2>
+    <p>ID de la facture : {{ facture.id }}</p>
+    <p>Date de la facture : {{ facture.dateFacture | date }}</p>
+
+  
+    <h3>Produit associé à la facture</h3>
+    <p>Référence du produit : {{ facture.produit.reference }}</p>
+    <p>Nom du produit : {{ facture.produit.nom }}</p>
+    <p>Montant Total: {{ montantTotal }}</p>
+
+    <h3>Informations de l'Achat</h3>
+    <p><strong>ID Achat:</strong> {{ facture.achat|json }}</p>
+    <p><strong>Nom Client:</strong> {{ facture.achat.nom_client }}</p>
+    <p><strong>Adresse Client:</strong> {{ facture.achat.adresse_client }}</p>
+    <button (click)="exportFactureToPdf()">Exporter en PDF</button>
+
+</div>

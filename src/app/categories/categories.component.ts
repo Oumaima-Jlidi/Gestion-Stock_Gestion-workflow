@@ -3,6 +3,8 @@ import { CategorieService } from '../service/categorie.service';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import * as $ from 'jquery';
+import * as jQuery from 'jquery';
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',

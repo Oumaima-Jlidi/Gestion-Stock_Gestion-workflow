@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { AchatComponent } from './achat/achat.component';
 import { ListeAchatComponent } from './liste-achat/liste-achat.component';
 import { UpdateAchatComponent } from './update-achat/update-achat.component';
+import { FactureComponent } from './facture/facture.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { UpdateAchatComponent } from './update-achat/update-achat.component';
     LoginComponent,
     AchatComponent,
     ListeAchatComponent,
-    UpdateAchatComponent
+    UpdateAchatComponent,
+    FactureComponent
   ],
   imports: [
     BrowserModule,
