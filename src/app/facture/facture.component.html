@@ -14,6 +14,6 @@
     <p><strong>ID Achat:</strong> {{ facture.achat|json }}</p>
     <p><strong>Nom Client:</strong> {{ facture.achat.nom_client }}</p>
     <p><strong>Adresse Client:</strong> {{ facture.achat.adresse_client }}</p>
-    <button (click)="exportFactureToPdf()">Exporter en PDF</button>
+    <button (click)="generatePdf()">Exporter en PDF</button>
 
 </div>

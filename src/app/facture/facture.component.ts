@@ -45,6 +45,7 @@ console.log(this.produitId)
     // Appeler le service pour obtenir les détails de la facture par son ID
     this.factureService.getFactureById(factureId).subscribe((facture) => {
       this.facture = facture;
+      
        // Affectez la facture récupérée à 'facture'
        console.log('Données de l\'achat reçues :', facture.achat);
 
@@ -65,12 +66,9 @@ console.log(this.produitId)
       this.montantTotal = (prixUnitaire * quantite) + TVA;
     }
   }
-  exportFactureToPdf() {
-    // Vérifiez que vous avez les données de la facture
+  generatePdf() {
     if (this.facture) {
-      // Appelez la méthode du service PdfService pour générer et télécharger le PDF
-      this.pdfService.generateFacturePdf(JSON.stringify(this.facture));
+      this.pdfService.generateFacturePdf(this.facture);
     }
   }
-
 }
