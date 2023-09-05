@@ -1,13 +1,19 @@
 package com.projet.stage.entities;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class Achat implements Serializable {
 
 
@@ -18,11 +24,11 @@ public class Achat implements Serializable {
 	private String adresse_client;
     private int quantite;
     @Temporal(TemporalType.TIMESTAMP) // Utilisez TemporalType.TIMESTAMP pour stocker la date et l'heure
-
     private Date dateAchat;
-    @OneToMany(mappedBy = "achat", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Facture> factures = new ArrayList<>();
+
+    @JsonManagedReference // Côté "propriétaire" de la relation
+    @OneToMany(mappedBy = "achat")
+    private List<Facture> factures;
     @ManyToOne
     private Produit produit;
     
@@ -32,20 +38,18 @@ public class Achat implements Serializable {
 
 	}
 
-public Achat(String id) {
-    this.id = Long.parseLong(id);
-}
-
-	public Achat(String nom_client, String adresse_client, int quantite, Produit produit) {
-		super();
-		this.nom_client = nom_client;
-		this.adresse_client = adresse_client;
-		this.quantite = quantite;
-		this.produit = produit;
-        this.dateAchat = new Date(); // Initialisez la date d'achat avec la date système lors de la création de l'objet
-
+	@JsonIgnore
+	public Achat(String id) {
+	    this.id = Long.parseLong(id);
 	}
-	
+
+	 public Achat(String nom_client, String adresse_client, int quantite, Date dateAchat) {
+	        this.nom_client = nom_client;
+	        this.adresse_client = adresse_client;
+	        this.quantite = quantite;
+	        this.dateAchat = dateAchat;
+	    }
+	 
 	public Achat(Long id, String nom_client, String adresse_client, int quantite, Produit produit) {
 		super();
 		this.id = id;
@@ -57,6 +61,43 @@ public Achat(String id) {
 
 	}
 	 
+	public Achat(String nom_client, String adresse_client, int quantite, Produit produit) {
+		super();
+		this.nom_client = nom_client;
+		this.adresse_client = adresse_client;
+		this.quantite = quantite;
+		this.produit = produit;
+	}
+
+	public Achat(String nom_client, String adresse_client, int quantite, Date dateAchat, Produit produit) {
+		super();
+		this.nom_client = nom_client;
+		this.adresse_client = adresse_client;
+		this.quantite = quantite;
+		this.dateAchat = dateAchat;
+		this.produit = produit;
+	}
+
+	public Achat(Long id, String nom_client, String adresse_client, int quantite, Date dateAchat,
+			List<Facture> factures, Produit produit) {
+		super();
+		this.id = id;
+		this.nom_client = nom_client;
+		this.adresse_client = adresse_client;
+		this.quantite = quantite;
+		this.dateAchat = dateAchat;
+		this.factures = factures;
+		this.produit = produit;
+	}
+
+	public Achat(String nom_client, String adresse_client, int quantite, Produit produit, Date dateAchat) {
+        this.nom_client = nom_client;
+        this.adresse_client = adresse_client;
+        this.quantite = quantite;
+        this.produit = produit;
+        this.dateAchat = dateAchat;
+    }
+
 	public Long getId() {
 		return id;
 	}
@@ -102,5 +143,12 @@ public Achat(String id) {
 		public void setFactures(List<Facture> factures) {
 			this.factures = factures;
 		}
-	
+		public double calculerMontantTVA() {
+		    if (factures != null && produit != null) {
+		        double TVA = produit.calculerMontantTVA(); 
+		        // Assurez-vous d'avoir une méthode pour calculer la TVA dans votre classe Produit
+		        return TVA;
+		    }
+		    return 0.0; // Gérez le cas où la liste de factures ou le produit est nul
+		}
 }

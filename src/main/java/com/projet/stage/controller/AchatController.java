@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,14 +30,15 @@ public class AchatController {
     @Autowired
     private AchatService achatService;
 
-    @PostMapping("/acheter-produit")
+    @PostMapping(value = "/acheter-produit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> acheterProduit(@RequestBody Achat request) {
         try {
             Achat achat = achatService.acheterProduit(
                 request.getId(),
                 request.getNom_client(),
                 request.getAdresse_client(),
-                request.getQuantite()
+                request.getQuantite(),
+                request.getDateAchat()
             );
             // Formater la date d'achat avant de la renvoyer dans la réponse
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

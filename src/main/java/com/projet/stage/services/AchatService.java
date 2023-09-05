@@ -1,5 +1,6 @@
 package com.projet.stage.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class AchatService {
     @Autowired
     private AchatRepository achatRepository;
 
-    public Achat acheterProduit(Long produitId, String nomClient, String adresseClient, int quantiteAchat) {
+    public Achat acheterProduit(Long produitId, String nomClient, String adresseClient, int quantiteAchat, Date dateAchat) {
         // Rechercher le produit à acheter
         Optional<Produit> optionalProduit = produitRepository.findById(produitId);
         if (!optionalProduit.isPresent()) {
@@ -47,12 +48,14 @@ public class AchatService {
         produit.setQuantite(nouvelleQuantite);
         produitRepository.save(produit);
 
-        // Créer l'objet Achat
-        Achat achat = new Achat(nomClient, adresseClient, quantiteAchat, produit);
+        // You can use the dateAchat parameter directly to create the Achat object
+        Achat achat = new Achat(nomClient, adresseClient, quantiteAchat, dateAchat, produit);
         achatRepository.save(achat);
 
         return achat;
     }
+
+
     public List<Achat> getAchatsByNomProduit(long produitId) {
         return achatRepository.findAchatsByNomProduit(produitId);
     }

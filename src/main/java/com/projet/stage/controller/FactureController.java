@@ -3,7 +3,9 @@ package com.projet.stage.controller;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,11 @@ import com.projet.stage.repos.FactureRepository;
 import com.projet.stage.repos.ProduitRepository;
 import com.projet.stage.services.AchatService;
 import com.projet.stage.services.FactureService;
+import com.projet.stage.services.PdfService;
+import com.itextpdf.text.DocumentException;
 
+
+import java.io.IOException;
 @RestController
 @RequestMapping("/api/factures")
 @CrossOrigin("*")
@@ -44,26 +50,57 @@ public class FactureController {
 	        this.produitRepository = produitRepository;
 	    }
 	
-	
+	    @Autowired
+	    private PdfService pdfService;
 
-	    @PostMapping("/ajouter-automatique")
-	    public ResponseEntity<?> ajouterFactureAutomatique(@RequestParam Long achatId, @RequestParam Long produitId) {
-	        ResponseEntity<?> response = factureService.ajouterFactureAutomatique(achatId, produitId);
+	    @GetMapping("/{factureId}/export-pdf")
+	    public ResponseEntity<byte[]> exportFactureToPdf(@PathVariable Long factureId) {
+	        try {
+	            // Récupérez la facture à partir de la base de données ou de tout autre service
+	            Facture facture = factureRepository.findById(factureId).orElse(null);
 
-	        if (response != null && response.getBody() != null) {
-	            return ResponseEntity.ok(response.getBody());
-	        } else {
-	            boolean achatExiste = achatRepository.existsById(achatId);
-	            boolean produitExiste = produitRepository.existsById(produitId);
-	            
-	            if (!achatExiste) {
-	                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Achat non trouvé.");
-	            } else if (!produitExiste) {
-	                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produit non trouvé.");
-	            } else {
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur inattendue lors de l'ajout de la facture.");
+	            if (facture == null) {
+	                return ResponseEntity.notFound().build();
 	            }
+
+	            // Générez le contenu de la facture au format texte
+	            String factureText = "ID de la facture : " + facture.getId() + "\n";
+	            factureText += "Date de la facture : " + facture.getDateFacture() + "\n";
+	            factureText += "Nom du Produit : " + facture.getProduit().getNom() + "\n";
+	            factureText += " Reference du Produit : " + facture.getProduit().getReference() + "\n";
+	            factureText += " Nom  du Client : " + facture.getAchat().getNom_client() + "\n";
+	            factureText += " Adresse  du Client : " + facture.getAchat().getAdresse_client() + "\n";
+	            factureText += " Quantite Acheter : " + facture.getAchat().getQuantite() + "\n";
+	            factureText += " Prix unitaire : " + facture.getProduit().getPrix() + "\n";
+	            factureText += " TVA : " + facture.getProduit().calculerMontantTVA() + "\n";
+
+	            // Calcul du total du prix
+	            double montantTotal = facture.calculerMontantTotal();
+	            factureText += "Total du prix : " + montantTotal + "\n";
+
+	            // Ajoutez d'autres informations de la facture ici
+
+	            // Supposons que vous avez un service PDF nommé pdfService
+	            byte[] pdfBytes = pdfService.generatePdf(factureText);
+
+	            HttpHeaders headers = new HttpHeaders();
+	            headers.setContentType(MediaType.APPLICATION_PDF);
+	            headers.setContentDispositionFormData("filename", "facture.pdf");
+	            headers.setContentLength(pdfBytes.length);
+
+	            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+	        } catch (DocumentException | IOException e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	        }
+	    }
+
+
+	   
+
+	    @PostMapping("/ajouter")
+	    public Facture ajouterFacture(@RequestBody FactureRequest factureRequest) {
+	        // Vous devez implémenter FactureService pour gérer l'ajout de la facture en utilisant factureData
+	        return factureService.ajouterFacture(factureRequest);
 	    }
 
 	 

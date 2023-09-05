@@ -1,6 +1,7 @@
 package com.projet.stage.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.projet.stage.entities.Achat;
 import com.projet.stage.entities.Facture;
+import com.projet.stage.entities.FactureRequest;
 import com.projet.stage.entities.Produit;
 import com.projet.stage.repos.AchatRepository;
 import com.projet.stage.repos.FactureRepository;
@@ -28,29 +32,36 @@ private ProduitRepository produitRepository;
 	        return factureRepository.findByAchatIdAndProduitId(achatId, produitId);
 	    }
 	   
-	   public ResponseEntity<?> ajouterFactureAutomatique(Long achatId, Long produitId) {
-		    // Créez une instance de Facture avec les informations nécessaires
-		    Facture facture = new Facture();
-		    
-		    // Récupérez l'achat et le produit en utilisant leurs IDs
-		    Achat achat = achatRepository.findById(achatId).orElse(null);
-		    Produit produit = produitRepository.findById(produitId).orElse(null);
-		    
-		    if (achat != null && produit != null) {
-		        facture.setAchat(achat);
-		        facture.setProduit(produit);
-		        facture.setDateFacture(new Date()); // Utilisez la date actuelle
-		        
-		        // Enregistrez la facture dans la base de données
-		        Facture factureEnregistree = factureRepository.save(facture);
-		        
-		        // Renvoyez la facture enregistrée avec un code d'état 201 (Created)
-		        return ResponseEntity.status(HttpStatus.CREATED).body(factureEnregistree);
-		    } else {
-		        // Gérez le cas où l'achat ou le produit n'a pas été trouvé
-		        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Achat ou produit non trouvé.");
+	 
+	   public Facture ajouterFacture(FactureRequest factureRequest) {
+		    // Récupérez l'achat et le produit en fonction de leurs identifiants
+		    Long achatId = factureRequest.getAchatId();
+		    Long produitId = factureRequest.getProduitId();
+
+		    // Vérifiez que les identifiants ne sont pas null
+		    if (achatId == null || produitId == null) {
+		        throw new IllegalArgumentException("Les identifiants d'achat et de produit ne peuvent pas être null.");
 		    }
+
+		    // Récupérez l'achat et le produit depuis les référentiels
+		    Achat achat = achatRepository.findById(achatId).orElseThrow(() -> new IllegalArgumentException("Achat introuvable"));
+		    Produit produit = produitRepository.findById(produitId).orElseThrow(() -> new IllegalArgumentException("Produit introuvable"));
+
+		    // Créez une nouvelle instance de Facture
+		    Facture facture = new Facture();
+		    facture.setDateFacture(new Date()); // Initialisez la date de la facture
+
+		    // Associez l'achat et le produit à la facture
+		    facture.setAchat(achat);
+		    facture.setProduit(produit);
+
+		    // Calculez le montant total ici (par exemple, en utilisant le prix du produit et la quantité achetée)
+
+		    // Enregistrez la facture dans la base de données
+		    return factureRepository.save(facture);
 		}
+
+
 
 	   
 	   public Facture getFactureById(Long id) {
@@ -58,5 +69,5 @@ private ProduitRepository produitRepository;
 	        return optionalFacture.orElse(null);
 	    }
 
-
+	  
 }

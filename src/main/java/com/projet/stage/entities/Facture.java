@@ -14,10 +14,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
+
 public class Facture implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +31,9 @@ public class Facture implements Serializable {
 
 	private Date dateFacture;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "achat_id")
-    @JsonBackReference
+    @JsonManagedReference // Côté "propriétaire" de la relation
 
     private Achat achat;
 
@@ -37,6 +42,7 @@ public class Facture implements Serializable {
     @JoinColumn(name = "produit_id")
     private Produit produit;
 
+	
 	public Facture(Long id, Date dateFacture, Achat achat, Produit produit) {
 		super();
 		this.id = id;
@@ -85,5 +91,17 @@ public class Facture implements Serializable {
 		this.produit = produit;
 	}
     
-    
+	 public double calculerMontantTotal() {
+	        if (achat != null && produit != null) {
+	            int quantite = achat.getQuantite();
+	            double prixUnitaire = produit.getPrix();
+	            double TVA = produit.calculerMontantTVA(); // Assurez-vous d'avoir une méthode pour calculer la TVA dans votre classe Produit
+
+	            // Calculez le montant total de la facture
+	            double montantTotal = (prixUnitaire * quantite) + TVA;
+	            return montantTotal;
+	        } else {
+	            return 0.0; // Gérez le cas où l'achat ou le produit est nul
+	        }
+	    }
 }
