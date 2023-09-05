@@ -1,19 +1,125 @@
+<!DOCTYPE html>
+<html>
 
-<div *ngIf="facture">
-    <h2>Détails de la facture</h2>
-    <p>ID de la facture : {{ facture.id }}</p>
-    <p>Date de la facture : {{ facture.dateFacture | date }}</p>
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+        integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+</head>
 
-  
-    <h3>Produit associé à la facture</h3>
-    <p>Référence du produit : {{ facture.produit.reference }}</p>
-    <p>Nom du produit : {{ facture.produit.nom }}</p>
-    <p>Montant Total: {{ montantTotal }}</p>
+<body>
+    <div class="container">
+        <div class="invoice">
+            <div class="row">
+                <div class="col-7">
+                    <img src="../assets/img/logo.jpg" class="logo" />
+                </div>
+                <div class="col-5">
+                    <h1 class="document-type display-4">FACTURE</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7">
+                    <p class="addressMySam">
+                        <strong>Diamonta Textille</strong><br />
+                        161 Tunis Grana <br />
+                    </p>
+                </div>
+                <div class="col-5">
+                    <br /><br /><br />
+                    <div *ngIf="achat">
 
-    <h3>Informations de l'Achat</h3>
-    <p><strong>ID Achat:</strong> {{ facture.achat|json }}</p>
-    <p><strong>Nom Client:</strong> {{ facture.achat.nom_client }}</p>
-    <p><strong>Adresse Client:</strong> {{ facture.achat.adresse_client }}</p>
-    <button (click)="generatePdf()">Exporter en PDF</button>
+                    <p class="addressDriver">
+                        <strong>Nom de l'acheteur :</strong> {{ achat.nom_client }}<br />
+                        <strong>Adresse de livraison :</strong> {{ achat.adresse_client }}<br />
+                        <!-- Ajoutez d'autres informations d'achat ici en utilisant les propriétés de l'objet achat -->
+                    </p>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <h6>Frais de services <b>Diamonta Textille</b> du</h6>
+            <br />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Reference Du Produit</th>
 
-</div>
+                        <th>Nom Du Produit</th>
+
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>TVA</th>
+
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="achat">
+                        <td>{{achat.produit.reference}}</td>
+
+                        <td>{{achat.produit.nom}}</td>
+                        <td>{{achat.quantite}}</td>
+                        <td>{{achat.produit.prix}}</td>
+
+                        <!--<td class="text-right">1,20€</td>-->
+                        <td>19%</td>
+                        
+                    </tr>
+                  
+                   
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-8">
+                </div>
+                <div class="col-4">
+                    <table class="table table-sm text-right">
+                        <tr>
+                            <td><strong>Total HT</strong></td>
+                            <td class="text-right">{{montantHTVA}} DT</td>
+                        </tr>
+                        <tr>
+                            <td>TVA 19%</td>
+                            <td class="text-right" th:text="${ totalTVA }">{{montantTotal}} DT</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total TTC</strong></td>
+                            <td class="text-right">{{montantTTC}} DT</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <p class="conditions">
+                En votre aimable règlement
+                <br />
+                Et avec nos remerciements.
+                <br /><br />
+                Conditions de paiement : paiement à réception de facture.
+                <br />
+                Aucun escompte consenti pour règlement anticipé.
+                <br />
+                Règlement par virement bancaire ou carte bancaire.
+                <br /><br />
+               
+            </p>
+
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <p class="bottom-page text-right">
+                MYSAM SAS - N° SIRET 81754802700017 RCS ALBI<br />
+                8, avenue de la Martelle - 81150 TERSSAC 06 32 97 00 22 - www.mysam.fr<br />
+                Code APE 6312Z - N° TVA Intracom. FR 63 817548027<br />
+                <!--IBAN FR76 1470 7034 0031 4211 7882 825 - SWIFT CCBPFRPPMTZ-->
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

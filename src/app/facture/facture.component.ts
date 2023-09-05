@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FactureService } from '../service/facture.service';
-import { Facture } from '../models/facture.model';
-import { FactureRequest } from '../models/FactureRequest.model';
-import { PdfService } from '../service/pdf.service';
+import { AchatService } from '../service/achat.service';
+import { Achat } from '../models/achat.model';
 
 @Component({
   selector: 'app-facture',
@@ -12,63 +10,68 @@ import { PdfService } from '../service/pdf.service';
 })
 export class FactureComponent implements OnInit {
   achatId: number = -1;
-  produitId: number = -1;
-  facture: any; // Variable pour stocker les données de la facture
-  
-  dateFacture: Date = new Date();
-  errorMessage: string = '';
-  successMessage: string = '';
-  montantTotal: number=-1; // Variable pour stocker le montant total
-
+  achat: Achat | null = null; // Variable pour stocker les données de l'achat
+  montantTotal: number=0; // Variable pour stocker le montant total
+  montantHTVA:number=0;
+  montantTTC:number=0;
   constructor(
     private route: ActivatedRoute,
-    private factureService: FactureService,
-    private pdfService:PdfService
+    private achatService: AchatService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const achatIdParam = params.get('achatId');
-      const produitIdParam = params.get('produitId');
-      
-      if (achatIdParam !== null && produitIdParam !== null) {
+      const achatIdParam = params.get('id');
+      if (achatIdParam !== null) {
         this.achatId = +achatIdParam; // Convertit en nombre
-        this.produitId = +produitIdParam; // Convertit en nombre
+        // Appeler le service pour obtenir les détails de l'achat par son ID
+        this.achatService.getAchat(this.achatId).subscribe((achat) => {
+          this.achat = achat;
+          this.calculerMontantTVA();
+          this.calculerMontantHTVA();
+          this.calculerMontantTTC();
+
+        },
+        (error: any) => {
+          console.error('Erreur lors de la récupération des détails de l\'achat :', error);
+        });
       }
-   
     });
-    this.calculerMontantTotal();
-
-    const factureId = this.route.snapshot.params['id'];
-    const achatId = this.achatId; // Récupérez l'ID de l'achat ici
-console.log(this.produitId)
-    // Appeler le service pour obtenir les détails de la facture par son ID
-    this.factureService.getFactureById(factureId).subscribe((facture) => {
-      this.facture = facture;
-      
-       // Affectez la facture récupérée à 'facture'
-       console.log('Données de l\'achat reçues :', facture.achat);
-
-    },
-      (error: any) => {
-        console.error('Erreur lors de la récupération des détails de la facture :', error);
-      }
-   );
-    
   }
-  calculerMontantTotal() {
+  calculerMontantTVA() {
     // Implémentez la logique pour calculer le montant total à partir des données de la facture
-    if (this.facture) {
-      const quantite = this.facture.achat.quantite;
-      const prixUnitaire = this.facture.produit.prix;
-      const TVA = this.facture.produit.tva;
+    if (this.achat && this.achat.produit) {
+      const prixUnitaire = this.achat.produit.prix;
+      const Qunatite = this.achat.quantite;
 
-      this.montantTotal = (prixUnitaire * quantite) + TVA;
+      const TVA = 0.19;
+
+      // Calculer le montant total en ajoutant la TVA au prix unitaire
+      this.montantTotal = (prixUnitaire * TVA )*Qunatite;
     }
   }
-  generatePdf() {
-    if (this.facture) {
-      this.pdfService.generateFacturePdf(this.facture);
+
+  calculerMontantHTVA() {
+    // Implémentez la logique pour calculer le montant total à partir des données de la facture
+    if (this.achat && this.achat.produit) {
+      const prixUnitaire = this.achat.produit.prix;
+      const Qunatite = this.achat.quantite;
+
+
+      // Calculer le montant total en ajoutant la TVA au prix unitaire
+      this.montantHTVA = (prixUnitaire  *Qunatite);
+    }
+  }
+
+  calculerMontantTTC() {
+    // Implémentez la logique pour calculer le montant total à partir des données de la facture
+    if (this.achat && this.achat.produit) {
+      const prixUnitaire = this.achat.produit.prix;
+      const Qunatite = this.achat.quantite;
+      const TVA = this.achat.produit.tva;
+
+      // Calculer le montant total en ajoutant la TVA au prix unitaire
+      this.montantTTC = (prixUnitaire  *Qunatite)+TVA;
     }
   }
 }

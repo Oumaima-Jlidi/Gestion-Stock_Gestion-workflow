@@ -27,7 +27,7 @@ const routes: Routes = [
 {path: "achat",  component: AchatComponent},
 {path: "liste-achat",  component: ListeAchatComponent},
 {path:"update-achat/:achatId/:produitId",  component: UpdateAchatComponent},
-{path:"facture/:id",  component: FactureComponent},
+{ path: 'facture/:id', component: FactureComponent }, // Utilisez :achatId, :produitId et :factureId pour les paramètres d'URL
 
 
 

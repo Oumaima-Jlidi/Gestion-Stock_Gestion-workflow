@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,8 +16,12 @@ export class AchatService {
   constructor(private http: HttpClient) {}
 
   acheterProduit(achatData: any): Observable<any> {
-    return this.http.post(this.API_URL + this.ENDPOINT_PRODS, achatData);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+const options = { headers: headers };
+    
+    return this.http.post(this.API_URL + this.ENDPOINT_PRODS, achatData, options);
   }
+
 
   getAchatsByProduit(produitId: number): Observable<Achat[]> {
     const url = `${this.API_URL + this.ENDPOINT_ACHATS_BY_PRODUIT}/${produitId}`;
@@ -32,6 +36,7 @@ export class AchatService {
     );  }
 
 getAchat(achatId :number):Observable<any>{
+  
   const url=` ${this.API_URL}${this.ENDPOINT_ACHATS}/${achatId}`
   return this.http.get(url);
 }

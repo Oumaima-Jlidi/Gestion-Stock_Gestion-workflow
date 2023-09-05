@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Facture } from '../models/facture.model';
 import { FactureRequest } from '../models/FactureRequest.model';
@@ -19,11 +19,19 @@ export class FactureService {
     const url = `${this.baseUrl}/achat/${achatId}/${produitId}`;
     return this.http.get<Facture>(url);
   }
-  ajouterFactureAutomatique(achatId: number, produitId: number): Observable<Facture> {
-    const url = `${this.baseUrl}/ajouter-automatique?achatId=${achatId}&produitId=${produitId}`;
-    return this.http.post<Facture>(url, {});
-  }
+  ajouterFacture(facture: FactureRequest): Observable<Facture> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
 
+    return this.http.post<Facture>(
+      `${this.baseUrl}/ajouter`,
+      facture,
+      httpOptions
+    );
+  }
   getFactureById(id: number): Observable<Facture> {
     const url = `${this.baseUrl}/${id}`;
     return this.http.get<Facture>(url);
